@@ -36,24 +36,26 @@ namespace SilenceController
 
         private void CheckTime(object state)
         {
-            foreach (var time in startupTimes)
+            var fromLastActionSeconds = DateTime.Now.TimeOfDay.Subtract(_lastAction.TimeOfDay).TotalSeconds;
+            if (fromLastActionSeconds > 5 || fromLastActionSeconds < 0)
             {
-                if (DateTime.Now.TimeOfDay.Subtract(time.TimeOfDay).TotalSeconds > 0 && DateTime.Now.TimeOfDay.Subtract(time.TimeOfDay).TotalSeconds < 5 &&
-                    DateTime.Now.TimeOfDay.Subtract(_lastAction.TimeOfDay).TotalSeconds > 5)
+                foreach (var time in startupTimes)
                 {
-                    MenuItemRun_Click(null, null);
-                    _lastAction = DateTime.Now;
-                }                
-            }
-
-            foreach (var time in killTimes)
-            {
-                if (DateTime.Now.TimeOfDay.Subtract(time.TimeOfDay).TotalSeconds > 0 && DateTime.Now.TimeOfDay.Subtract(time.TimeOfDay).TotalSeconds < 5 &&
-                    DateTime.Now.TimeOfDay.Subtract(_lastAction.TimeOfDay).TotalSeconds > 5)
-                {
-                    MenuItemKill_Click(null, null);
-                    _lastAction = DateTime.Now;
+                    if (DateTime.Now.TimeOfDay.Subtract(time.TimeOfDay).TotalSeconds > 0 && DateTime.Now.TimeOfDay.Subtract(time.TimeOfDay).TotalSeconds < 5)
+                    {
+                        MenuItemRun_Click(null, null);
+                        _lastAction = DateTime.Now;
+                    }
                 }
+
+                foreach (var time in killTimes)
+                {
+                    if (DateTime.Now.TimeOfDay.Subtract(time.TimeOfDay).TotalSeconds > 0 && DateTime.Now.TimeOfDay.Subtract(time.TimeOfDay).TotalSeconds < 5)
+                    {
+                        MenuItemKill_Click(null, null);
+                        _lastAction = DateTime.Now;
+                    }
+                } 
             }
         }
 

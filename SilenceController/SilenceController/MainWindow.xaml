@@ -27,7 +27,7 @@
     <Grid>
         <tb:TaskbarIcon x:Name="myNotifyIcon"
                     Visibility="Visible"
-                    ToolTipText="Fallback ToolTip for Windows xp"
+                    ToolTipText="Контролер тишины"
                     IconSource="/Images/eye.ico"
                     ContextMenu="{StaticResource TrayMenu}"
                     MenuActivation="LeftOrRightClick"                    
