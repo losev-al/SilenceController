@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="SilenceController.Controls.PomodoroBalloon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SilenceController.Controls"
+             mc:Ignorable="d"              
+             Background="Black">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Black" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Width" Value="90" />
+            <Setter Property="Foreground" Value="LightYellow" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle Name="GelBackground" RadiusX="9" RadiusY="9" Fill="Black" />
+                            <Rectangle Name="GelShine" Margin="2,2,2,0" VerticalAlignment="Top" RadiusX="6" RadiusY="6" Height="15px">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Offset="0" Color="#ccffffff" />
+                                        <GradientStop Offset="1" Color="Transparent" />
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <ContentPresenter Name="GelButtonContent" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Content}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Rectangle.Fill" TargetName="GelBackground">
+                                    <Setter.Value>
+                                        <RadialGradientBrush>
+                                            <GradientStop Offset="0" Color="Lime" />
+                                            <GradientStop Offset="1" Color="DarkGreen" />
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Foreground" Value="Black" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Rectangle.Fill" TargetName="GelBackground">
+                                    <Setter.Value>
+                                        <RadialGradientBrush>
+                                            <GradientStop Offset="0" Color="#ffcc00" />
+                                            <GradientStop Offset="1" Color="#cc9900" />
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="300" />
+        </Grid.ColumnDefinitions>
+        <Rectangle Grid.RowSpan="100" Grid.ColumnSpan="100" Stroke="LightYellow" StrokeThickness="1" Margin="2" />
+
+        <Image VerticalAlignment="Center" Grid.RowSpan="100" Width="100" Source="/SilenceController;component/Images/tomato.png" />
+
+        <TextBlock x:Name="tbHeader" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="LightYellow" Margin="5" TextWrapping="Wrap" />
+        <TextBlock x:Name="tbContent" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="LightYellow" TextWrapping="Wrap" Margin="5" />
+        <StackPanel x:Name="spActions" Orientation="Horizontal" Grid.Column="1" Grid.Row="1" />
+    </Grid>
+</UserControl>

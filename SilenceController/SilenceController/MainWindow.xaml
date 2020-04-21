@@ -21,6 +21,12 @@
                 </MenuItem.Icon>
             </MenuItem>
             <Separator />
+            <MenuItem Header="Запустить серию помидоров" Click="PomodoroSeriesStart_Click">
+                <MenuItem.Icon>
+                    <Image Source="/Images/tomato.png" Width="40" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
             <MenuItem Header="Выход" Click="MenuItemClose_Click" />
         </ContextMenu>
     </Window.Resources>

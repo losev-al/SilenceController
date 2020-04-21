@@ -68,6 +68,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\PomodoroBalloon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,20 +80,33 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configurations\ApplicationMode.cs" />
     <Compile Include="Configurations\KillPaths.cs" />
     <Compile Include="Configurations\KillTimes.cs" />
     <Compile Include="Configurations\PathCollection.cs" />
+    <Compile Include="Configurations\Pomodoro.cs" />
+    <Compile Include="Configurations\UseSchedule.cs" />
     <Compile Include="Configurations\PathElement.cs" />
     <Compile Include="Configurations\StartupPaths.cs" />
     <Compile Include="Configurations\StartupTimes.cs" />
     <Compile Include="Configurations\TimeCollection.cs" />
     <Compile Include="Configurations\TimeElement.cs" />
+    <Compile Include="Controls\PomodoroBalloon.xaml.cs">
+      <DependentUpon>PomodoroBalloon.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PomodoroWorker\BallonAction.cs" />
+    <Compile Include="PomodoroWorker\PomodoroStatuses.cs" />
+    <Compile Include="PomodoroWorker\PomodoroWorker.cs" />
+    <Compile Include="PomodoroWorker\IntervalEndedArgs.cs" />
+    <Compile Include="PomodoroWorker\IntervalEndedHandler.cs" />
+    <Compile Include="PomodoroWorker\IntervalStartedArgs.cs" />
+    <Compile Include="PomodoroWorker\IntervalStartedHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -121,6 +138,14 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\eye.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\tomato.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Audio\sound_21576.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
