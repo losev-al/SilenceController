@@ -131,11 +131,17 @@ namespace SilenceController
             _pomodoroWorker.BreakIntervalEnded += PomodoroWorker_BreakIntervalEnded;
             _pomodoroWorker.IdleIntervalStarted += PomodoroWorker_IdleIntervalStarted;
             _pomodoroWorker.SeriesEnded += PomodoroWorker_SeriesEnded;
+            _pomodoroWorker.NeedShowStatus += PomodoroWorker_NeedShowStatus;
 
             _timer = new Timer(CheckTime, null, new TimeSpan(-1), new TimeSpan(0, 0, 1));
 
             _player = new MediaPlayer();
             _player.Open(new Uri(@"Audio\sound_21576.mp3", UriKind.Relative));
+        }
+
+        private void PomodoroWorker_NeedShowStatus(object sender, StatusArgs e)
+        {
+            myNotifyIcon.ShowCustomBalloon(new PomodoroBalloon(e.StatusMessage, e.Actions), System.Windows.Controls.Primitives.PopupAnimation.Slide, 10000);
         }
 
         private void PomodoroWorker_IdleIntervalStarted()
@@ -146,17 +152,23 @@ namespace SilenceController
 
         private void PomodoroWorker_BreakIntervalEnded(object sender, IntervalEndedArgs e)
         {
-            SmartInvoke(() => myNotifyIcon.ShowCustomBalloon(new PomodoroBalloon("Отдых закончен", e.Actions), System.Windows.Controls.Primitives.PopupAnimation.Slide, null));            
+            SmartInvoke(() =>
+            {
+                myNotifyIcon.ShowCustomBalloon(new PomodoroBalloon("Отдых закончен", e.Actions), System.Windows.Controls.Primitives.PopupAnimation.Slide, null);
+                _player.Play();
+            });
         }
 
         private void PomodoroWorker_BreakIntervalStarted(object sender, IntervalStartedArgs e)
         {
             myNotifyIcon.ShowCustomBalloon(new PomodoroBalloon($"{e.IterationNumber} отдых начат", $"Интервал: {e.IntervalLength}"), System.Windows.Controls.Primitives.PopupAnimation.Slide, 5000);
+            _player.Stop();
         }
 
         private void PomodoroWorker_SeriesEnded()
         {
             myNotifyIcon.ShowCustomBalloon(new PomodoroBalloon("Серия закончена", $"Приятного отдыха"), System.Windows.Controls.Primitives.PopupAnimation.Slide, 5000);
+            _player.Stop();
         }
 
         private void PomodoroWorker_WorkIntervalEnded(object sender, PomodoroWorker.IntervalEndedArgs e)
@@ -183,6 +195,7 @@ namespace SilenceController
         private void PomodoroWorker_WorkIntervalStarted(object sender, PomodoroWorker.IntervalStartedArgs e)
         {
             myNotifyIcon.ShowCustomBalloon(new PomodoroBalloon($"{e.IterationNumber} помидор начат", $"Интервал: {e.IntervalLength}"), System.Windows.Controls.Primitives.PopupAnimation.Slide, 5000);
+            _player.Stop();
         }
 
         private void MenuItemRun_Click(object sender, RoutedEventArgs e)
@@ -213,6 +226,11 @@ namespace SilenceController
         private void PomodoroSeriesStart_Click(object sender, RoutedEventArgs e)
         {
             _pomodoroWorker.StartSeries();
+        }
+
+        private void PomodoroStatus_Click(object sender, RoutedEventArgs e)
+        {
+            _pomodoroWorker.CheckStatus();
         }
     }
 }

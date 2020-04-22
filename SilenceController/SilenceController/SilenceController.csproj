@@ -107,6 +107,8 @@
     <Compile Include="PomodoroWorker\IntervalEndedHandler.cs" />
     <Compile Include="PomodoroWorker\IntervalStartedArgs.cs" />
     <Compile Include="PomodoroWorker\IntervalStartedHandler.cs" />
+    <Compile Include="PomodoroWorker\StatusArgs.cs" />
+    <Compile Include="PomodoroWorker\StatusHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -146,6 +148,9 @@
     <None Include="Audio\sound_21576.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\status.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

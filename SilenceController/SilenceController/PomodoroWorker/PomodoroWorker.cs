@@ -78,6 +78,11 @@ namespace SilenceController.PomodoroWorker
         /// Событие говорящие о том, что реакция пользователя отработана
         /// </summary>
         public event Action SeriesEnded;
+
+        /// <summary>
+        /// Событие по которому требуется показать статус работы помидорного воркера
+        /// </summary>
+        public event StatusHandler NeedShowStatus;
         #endregion
 
         public PomodoroWorker(TimeSpan workInterval, TimeSpan breakInterval, int workCycles)
@@ -158,7 +163,7 @@ namespace SilenceController.PomodoroWorker
         /// <summary>
         /// Прерывает серию
         /// </summary>
-        private void InterruptSeries()
+        public void InterruptSeries()
         {
             _status = PomodoroStatuses.Idle;
             IdleIntervalStarted();
@@ -192,6 +197,40 @@ namespace SilenceController.PomodoroWorker
             _currentSeriesPomodoroCount = 0;
 
             StartWorkInterval();
+        }
+
+        /// <summary>
+        /// Метод проверки статуса
+        /// </summary>
+        public void CheckStatus()
+        {
+            string message = "";
+            BallonAction[] actions = new BallonAction[0];
+            switch (_status)
+            {
+                case PomodoroStatuses.Idle:
+                    message = "Ожидание начала сессии";
+                    actions = new[] { new BallonAction() { Caption = "Начать", Action = StartSeries } };
+                    break;
+                case PomodoroStatuses.WorkInterval:
+                    message = $"Рабочий интервал. До завершения интервала: {(int)WorkInterval.Subtract(DateTime.Now.TimeOfDay.Subtract(_intervalStart)).TotalMinutes} мин.";
+                    actions = new[] { new BallonAction() { Caption = "Отмена", Action = InterruptSeries } };
+                    break;
+                case PomodoroStatuses.AfterWorkInterval:
+                    break;
+                case PomodoroStatuses.BreakInterval:
+                    message = $"Интервал отдыха. До завершения интервала: {(int)BreakInterval.Subtract(DateTime.Now.TimeOfDay.Subtract(_intervalStart)).TotalMinutes} мин.";
+                    actions = new[] { new BallonAction() { Caption = "Помидорка", Action = StartWorkInterval } };
+                    break;
+                case PomodoroStatuses.AfterBreakInterval:
+                    break;
+                default:
+                    break;
+            }
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                NeedShowStatus?.Invoke(this, new StatusArgs() { StatusMessage = message, Actions = actions });
+            }
         }
     }
 }
